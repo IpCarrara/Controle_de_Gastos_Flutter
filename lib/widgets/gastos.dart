@@ -14,28 +14,10 @@ class Gastos extends StatefulWidget {
 class _GastosState extends State<Gastos> {
   final List<Gasto> _gastosRegistrados = [
     Gasto(
-      titulo: 'Donuts',
+      titulo: 'Exemplo de Gasto',
       valor: 12.00,
       data: DateTime.now(),
-      categoria: Categoria.comida,
-    ),
-    Gasto(
-      titulo: 'Internet',
-      valor: 99.00,
-      data: DateTime.now(),
-      categoria: Categoria.casa,
-    ),
-    Gasto(
-      titulo: 'Bar',
-      valor: 45.67,
-      data: DateTime.now(),
       categoria: Categoria.lazer,
-    ),
-    Gasto(
-      titulo: 'Passagem China',
-      valor: 4500.67,
-      data: DateTime.now(),
-      categoria: Categoria.viagem,
     ),
   ];
 
