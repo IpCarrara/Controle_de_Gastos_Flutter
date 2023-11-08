@@ -41,6 +41,7 @@ class _GastosState extends State<Gastos> {
 
   void _abrirTelaIncluirGasto() {
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) => NovoGasto(onIncluirGastos: _incluirGastos),
@@ -77,6 +78,8 @@ class _GastosState extends State<Gastos> {
 
   @override
   Widget build(BuildContext context) {
+    final largura = MediaQuery.of(context).size.width;
+
     Widget gastosExibidos = const Center(
       child: Text('Você ainda não tem nenhum gasto.'),
     );
@@ -98,12 +101,25 @@ class _GastosState extends State<Gastos> {
           ),
         ],
       ),
-      body: Column(children: [
-        Chart(gasto: _gastosRegistrados),
-        Expanded(
-          child: gastosExibidos,
-        ),
-      ]),
+      body: largura < 600
+          ? Column(
+              children: [
+                Chart(gasto: _gastosRegistrados),
+                Expanded(
+                  child: gastosExibidos,
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                  child: Chart(gasto: _gastosRegistrados),
+                ),
+                Expanded(
+                  child: gastosExibidos,
+                ),
+              ],
+            ),
     );
   }
 }

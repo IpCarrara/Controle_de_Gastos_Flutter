@@ -82,87 +82,94 @@ class _NovoGastoState extends State<NovoGasto> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
-      child: Column(
-        children: [
-          DropdownButton(
-            value: _categoriaSelecionada,
-            items: Categoria.values
-                .map(
-                  (categoria) => DropdownMenuItem(
-                    value: categoria,
-                    child: Text(
-                      categoria.name.toUpperCase(),
+    final tamanhoTeclado = MediaQuery.of(context).viewInsets.bottom;
+
+    return SizedBox(
+      height: double.infinity,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, tamanhoTeclado + 16),
+          child: Column(
+            children: [
+              DropdownButton(
+                value: _categoriaSelecionada,
+                items: Categoria.values
+                    .map(
+                      (categoria) => DropdownMenuItem(
+                        value: categoria,
+                        child: Text(
+                          categoria.name.toUpperCase(),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value == null) {
+                    return;
+                  }
+                  setState(
+                    () {
+                      _categoriaSelecionada = value;
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _controladorTitulo,
+                maxLength: 50,
+                decoration: const InputDecoration(label: Text('Titulo')),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controladorValor,
+                      decoration: const InputDecoration(
+                        label: Text('Valor'),
+                        prefixText: 'R\$ ',
+                      ),
+                      keyboardType: TextInputType.number,
                     ),
                   ),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (value == null) {
-                return;
-              }
-              setState(
-                () {
-                  _categoriaSelecionada = value;
-                },
-              );
-            },
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _controladorTitulo,
-            maxLength: 50,
-            decoration: const InputDecoration(label: Text('Titulo')),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _controladorValor,
-                  decoration: const InputDecoration(
-                    label: Text('Valor'),
-                    prefixText: 'R\$ ',
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(_dataEscolhida == null
+                            ? 'Escolha a Data'
+                            : dataFormato.format(_dataEscolhida!)),
+                        IconButton(
+                          onPressed: _escolherData,
+                          icon: const Icon(Icons.calendar_month),
+                        )
+                      ],
+                    ),
                   ),
-                  keyboardType: TextInputType.number,
-                ),
+                ],
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(_dataEscolhida == null
-                        ? 'Escolha a Data'
-                        : dataFormato.format(_dataEscolhida!)),
-                    IconButton(
-                      onPressed: _escolherData,
-                      icon: const Icon(Icons.calendar_month),
-                    )
-                  ],
-                ),
-              ),
+              const SizedBox(height: 35),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancelar'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: _salvar,
+                    child: const Text('Salvar'),
+                  ),
+                ],
+              )
             ],
           ),
-          const SizedBox(height: 35),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancelar'),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: _salvar,
-                child: const Text('Salvar'),
-              ),
-            ],
-          )
-        ],
+        ),
       ),
     );
   }
